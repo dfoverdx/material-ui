@@ -62,7 +62,7 @@ function binaryFindElement(array, element) {
  *  multiSelectGroup?: string;
  * }}
  *
- * @typedef DescendantContext
+ * @typedef DescendantContextType
  * @type {object}
  * @property {Descendant[]} descendants
  * @property {(descendant: Descendant) => void} registerDescendant
@@ -72,7 +72,7 @@ function binaryFindElement(array, element) {
 
 /**
  * @ignore - internal component.
- * @type {React.Context<DescendantContext>}
+ * @type {React.Context<DescendantContextType>}
  */
 const DescendantContext = React.createContext({});
 
