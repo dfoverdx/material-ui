@@ -1,12 +1,20 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { unstable_useEnhancedEffect as useEnhancedEffect } from '@material-ui/core/utils';
+import PropTypes from 'prop-types';
 
-/** Credit: https://github.com/reach/reach-ui/blob/86a046f54d53b6420e392b3fa56dd991d9d4e458/packages/descendants/README.md
- *  Modified slightly to suit our purposes.
+/**
+ * Credit: https://github.com/reach/reach-ui/blob/86a046f54d53b6420e392b3fa56dd991d9d4e458/packages/descendants/README.md
+ * Modified slightly to suit our purposes.
  */
 
 // To replace with .findIndex() once we stop IE11 support.
+/**
+ * @ignore - internal
+ * @template T
+ * @param {T[]} array
+ * @param {(item: T) => boolean} comp
+ * @returns {T}
+ */
 function findIndex(array, comp) {
   for (let i = 0; i < array.length; i += 1) {
     if (comp(array[i])) {
@@ -17,6 +25,13 @@ function findIndex(array, comp) {
   return -1;
 }
 
+/**
+ * @ignore - internal
+ * @template T
+ * @param {T[]} array
+ * @param {T} element
+ * @returns {number}
+ */
 function binaryFindElement(array, element) {
   let start = 0;
   let end = array.length - 1;
@@ -39,12 +54,37 @@ function binaryFindElement(array, element) {
   return start;
 }
 
+/**
+ * @typedef Descendant
+ * @type {Record<string, unknown> & {
+ *  element: React.ReactElement;
+ *  index: number;
+ *  multiSelectGroup?: string;
+ * }}
+ *
+ * @typedef DescendantContext
+ * @type {object}
+ * @property {Descendant[]} descendants
+ * @property {(descendant: Descendant) => void} registerDescendant
+ * @property {(element: React.ReactNode) => void} unregisterDescendant
+ * @property {string | null} parentId
+ */
+
+/**
+ * @ignore - internal component.
+ * @type {React.Context<DescendantContext>}
+ */
 const DescendantContext = React.createContext({});
 
 if (process.env.NODE_ENV !== 'production') {
   DescendantContext.displayName = 'DescendantContext';
 }
 
+/**
+ * @template T
+ * @param {T} value
+ * @returns {T}
+ */
 function usePrevious(value) {
   const ref = React.useRef(null);
   React.useEffect(() => {
@@ -71,9 +111,12 @@ const noop = () => {};
  *   5) index always up-to-date with the tree despite changes
  *   6) works with memoization of any component in the tree (hopefully)
  *
- * * As for SSR, the good news is that we don't actually need the index on the
+ * \* As for SSR, the good news is that we don't actually need the index on the
  * server for most use-cases, as we are only using it to determine the order of
  * composed descendants for keyboard navigation.
+ *
+ * @ignore - internal
+ * @param {Descendant} descendant
  */
 export function useDescendant(descendant) {
   const [, forceUpdate] = React.useState();
@@ -124,13 +167,28 @@ export function useDescendant(descendant) {
   return { parentId, index };
 }
 
+/**
+ * @typedef DescendantProviderProps
+ * @property {React.ReactNode} children
+ * @property {string} id
+ */
+
+/**
+ * @ignore - internal component.
+ * @param {DescendantProviderProps} props
+ * @returns {React.ReactElement}
+ */
 export function DescendantProvider(props) {
   const { children, id } = props;
 
+  /**
+   * @type {[(oldItems: Descendant[]) => Descendant[], (register: (oldItems: Descendant[]) => Descendant[]) => void]}
+   */
   const [items, set] = React.useState([]);
 
   const registerDescendant = React.useCallback(({ element, ...other }) => {
-    set((oldItems) => {
+    set((/** @type {Descendant[]} */ oldItems) => {
+      /** @type {Descendant[]} */
       let newItems;
       if (oldItems.length === 0) {
         // If there are no items, register at index 0 and bail.
