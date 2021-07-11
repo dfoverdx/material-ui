@@ -2,10 +2,10 @@ import * as React from 'react';
 import { InternalStandardProps as StandardProps, Theme } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { SxProps } from '@material-ui/system';
-import { TreeItemContentProps } from './TreeItemContent';
 import { TreeItemClasses } from './treeItemClasses';
+import { TreeItemContentProps } from './TreeItemContent';
 
-export interface TreeItemProps
+export interface TreeItemPropsBase
   extends StandardProps<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
   /**
    * The content of the component.
@@ -33,6 +33,10 @@ export interface TreeItemProps
    */
   disabled?: boolean;
   /**
+   * If `true`, the node cannot be multi-selected in a `multiSelect` `TreeView`.
+   */
+  disableMultiSelect?: boolean;
+  /**
    * The icon displayed next to a end node.
    */
   endIcon?: React.ReactNode;
@@ -59,13 +63,15 @@ export interface TreeItemProps
   nodeId: string;
   /**
    * The component used for the transition.
-   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
+   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the
+   * requirements for this component.
    * @default Collapse
    */
   TransitionComponent?: React.JSXElementConstructor<TransitionProps>;
   /**
    * Props applied to the transition element.
-   * By default, the element is based on this [`Transition`](http://reactcommunity.org/react-transition-group/transition) component.
+   * By default, the element is based on this
+   * [`Transition`](http://reactcommunity.org/react-transition-group/transition) component.
    */
   TransitionProps?: TransitionProps;
   /**
@@ -73,6 +79,54 @@ export interface TreeItemProps
    */
   sx?: SxProps<Theme>;
 }
+
+interface SingleSelectTreeItemProps extends TreeItemPropsBase {
+  /**
+   * If `true`, this node and its child nodes are multi-selectable.  If the parent `TreeView` is
+   * multi-selectable, then this node's children are selected separately from other nodes.
+   *
+   * Ctrl+clicking this node will select/deselect all of its children.  To disable this behavior,
+   * set `disableMultiSelect` on this node to `true`.
+   *
+   * @default false
+   */
+  multiSelectRoot?: false;
+  /**
+   * Callback fired when child nodes are selected/unselected when `multiSelectRoot` is `true`.
+   *
+   * @param {object} event The event source of the callback
+   * @param {string[]} nodeIds of the selected nodes.
+   * @default null
+   */
+  onNodeSelect?: null;
+}
+
+interface MultiSelectTreeItemProps extends TreeItemPropsBase {
+  /**
+   * If `true`, this node and its child nodes are multi-selectable.  If the parent `TreeView` is
+   * multi-selectable, then this node's children are selected separately from other nodes.
+   *
+   * Ctrl+clicking this node will select/deselect all of its children.  To disable this behavior,
+   * set `disableMultiSelect` on this node to `true`.
+   *
+   * @default false
+   */
+  multiSelectRoot: true;
+  /**
+   * Callback fired when child nodes are selected/unselected when `multiSelectRoot` is `true`.
+   *
+   * **Warning**: If you do not wish the parent `TreeView`'s `onNodeSelect()` to trigger, you must
+   * call `event.stopPropagation()`.  If you do not, and the `TreeView` is not multi-selectable, its
+   * callback must handle `nodeIds` of both `string` as `string[]`.
+   *
+   * @param {object} event The event source of the callback
+   * @param {string[]} nodeIds of the selected nodes.
+   * @default null
+   */
+  onNodeSelect?: (event: React.SyntheticEvent, nodeIds: string[]) => void;
+}
+
+type TreeItemProps = SingleSelectTreeItemProps | MultiSelectTreeItemProps;
 
 /**
  *

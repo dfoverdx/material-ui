@@ -361,6 +361,10 @@ TreeItem.propTypes /* remove-proptypes */ = {
    */
   disabled: PropTypes.bool,
   /**
+   * If `true`, the node cannot be multi-selected in a `multiSelect` `TreeView`.
+   */
+  disableMultiSelect: PropTypes.bool,
+  /**
    * The icon displayed next to a end node.
    */
   endIcon: PropTypes.node,
@@ -381,6 +385,16 @@ TreeItem.propTypes /* remove-proptypes */ = {
    */
   label: PropTypes.node,
   /**
+   * If `true`, this node and its child nodes are multi-selectable.  If the parent `TreeView` is
+   * multi-selectable, then this node's children are selected separately from other nodes.
+   *
+   * Ctrl+clicking this node will select/deselect all of its children.  To disable this behavior,
+   * set `disableMultiSelect` on this node to `true`.
+   *
+   * @default false
+   */
+  multiSelectRoot: PropTypes.bool,
+  /**
    * The id of the node.
    */
   nodeId: PropTypes.string.isRequired,
@@ -398,18 +412,28 @@ TreeItem.propTypes /* remove-proptypes */ = {
    */
   onMouseDown: PropTypes.func,
   /**
+   * Callback fired when child nodes are selected/unselected when `multiSelectRoot` is `true`.
+   *
+   * @param {object} event The event source of the callback
+   * @param {string[]} nodeIds of the selected nodes.
+   * @default null
+   */
+  onNodeSelect: PropTypes.func,
+  /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
   sx: PropTypes.object,
   /**
    * The component used for the transition.
-   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
+   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the
+   * requirements for this component.
    * @default Collapse
    */
   TransitionComponent: PropTypes.elementType,
   /**
    * Props applied to the transition element.
-   * By default, the element is based on this [`Transition`](http://reactcommunity.org/react-transition-group/transition) component.
+   * By default, the element is based on this
+   * [`Transition`](http://reactcommunity.org/react-transition-group/transition) component.
    */
   TransitionProps: PropTypes.object,
 };

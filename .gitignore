@@ -1,8 +1,10 @@
-# It is best to ignoring editor and system files in a local .gitignore configuration file.
+# It is best to ignore editor and system files in a local .gitignore configuration file.
 # However, in order to prevent issues, they are ignored here.
 .DS_STORE
 .idea
+.next
 .vscode
+*.code-workspace
 *.log
 *.tsbuildinfo
 /.eslintcache
@@ -23,7 +25,6 @@
 /test/bundling/fixtures/gatsby/public
 /test/regressions/screenshots
 /tmp
-.next
 build
 node_modules
 package-lock.json

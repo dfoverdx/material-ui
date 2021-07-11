@@ -872,7 +872,7 @@ TreeView.propTypes /* remove-proptypes */ = {
   defaultParentIcon: PropTypes.node,
   /**
    * Selected node ids. (Uncontrolled)
-   * When `multiSelect` is true this takes an array of strings; when false (default) a string.
+   * When `multiSelect` is `true` this takes an array of strings; when `false` (default) a string.
    * @default []
    */
   defaultSelected: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
@@ -896,7 +896,7 @@ TreeView.propTypes /* remove-proptypes */ = {
    */
   id: PropTypes.string,
   /**
-   * If true `ctrl` and `shift` will trigger multiselect.
+   * If `true` `ctrl` and `shift` will trigger multiselect.
    * @default false
    */
   multiSelect: PropTypes.bool,
@@ -915,7 +915,8 @@ TreeView.propTypes /* remove-proptypes */ = {
   /**
    * Callback fired when tree items are focused.
    *
-   * @param {object} event The event source of the callback **Warning**: This is a generic event not a focus event.
+   * @param {object} event The event source of the callback **Warning**: This is a generic event not
+   * a focus event.
    * @param {string} value of the focused node.
    */
   onNodeFocus: PropTypes.func,
@@ -923,8 +924,8 @@ TreeView.propTypes /* remove-proptypes */ = {
    * Callback fired when tree items are selected/unselected.
    *
    * @param {object} event The event source of the callback
-   * @param {(array|string)} value of the selected nodes. When `multiSelect` is true
-   * this is an array of strings; when false (default) a string.
+   * @param {string[]|string} nodeId of the selected nodes. When `multiSelect` is `true`
+   * this is an array of strings; when `false` (default) a string.
    */
   onNodeSelect: PropTypes.func,
   /**
@@ -936,7 +937,7 @@ TreeView.propTypes /* remove-proptypes */ = {
   onNodeToggle: PropTypes.func,
   /**
    * Selected node ids. (Controlled)
-   * When `multiSelect` is true this takes an array of strings; when false (default) a string.
+   * When `multiSelect` is `true` this takes an array of strings; when `false` (default) a string.
    */
   selected: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
   /**
