@@ -5,7 +5,7 @@ import { SxProps } from '@material-ui/system';
 import { TreeItemClasses } from './treeItemClasses';
 import { TreeItemContentProps } from './TreeItemContent';
 
-export interface TreeItemPropsBase
+interface TreeItemPropsBase
   extends StandardProps<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
   /**
    * The content of the component.
@@ -126,7 +126,7 @@ interface MultiSelectTreeItemProps extends TreeItemPropsBase {
   onNodeSelect?: (event: React.SyntheticEvent, nodeIds: string[]) => void;
 }
 
-type TreeItemProps = SingleSelectTreeItemProps | MultiSelectTreeItemProps;
+export type TreeItemProps = SingleSelectTreeItemProps | MultiSelectTreeItemProps;
 
 /**
  *

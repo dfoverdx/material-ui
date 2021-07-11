@@ -59,7 +59,7 @@ function binaryFindElement(array, element) {
  * @type {Record<string, unknown> & {
  *  element: React.ReactElement;
  *  index: number;
- *  multiSelectGroup?: string;
+ *  multiSelectGroupId?: string;
  * }}
  *
  * @typedef DescendantContextType
@@ -68,6 +68,7 @@ function binaryFindElement(array, element) {
  * @property {(descendant: Descendant) => void} registerDescendant
  * @property {(element: React.ReactNode) => void} unregisterDescendant
  * @property {string | null} parentId
+ * @property {string?} multiSelectGroupId
  */
 
 /**
@@ -125,6 +126,7 @@ export function useDescendant(descendant) {
     unregisterDescendant = noop,
     descendants = [],
     parentId = null,
+    multiSelectGroupId = descendant.multiSelectGroupId,
   } = React.useContext(DescendantContext);
 
   // This will initially return -1 because we haven't registered the descendant
@@ -164,7 +166,7 @@ export function useDescendant(descendant) {
     return undefined;
   }, [registerDescendant, unregisterDescendant, index, someDescendantsHaveChanged, descendant]);
 
-  return { parentId, index };
+  return { parentId, index, multiSelectGroupId };
 }
 
 /**

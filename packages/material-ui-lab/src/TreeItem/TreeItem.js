@@ -1,15 +1,15 @@
 import * as React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { elementTypeAcceptingRef } from '@material-ui/utils';
 import Collapse from '@material-ui/core/Collapse';
 import { alpha, styled, useThemeProps } from '@material-ui/core/styles';
-import { ownerDocument, useForkRef, unsupportedProp } from '@material-ui/core/utils';
+import { ownerDocument, unsupportedProp, useForkRef } from '@material-ui/core/utils';
 import { unstable_composeClasses as composeClasses } from '@material-ui/unstyled';
-import TreeViewContext from '../TreeView/TreeViewContext';
+import { elementTypeAcceptingRef } from '@material-ui/utils';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import { DescendantProvider, useDescendant } from '../TreeView/descendants';
-import TreeItemContent from './TreeItemContent';
+import TreeViewContext from '../TreeView/TreeViewContext';
 import treeItemClasses, { getTreeItemUtilityClass } from './treeItemClasses';
+import TreeItemContent from './TreeItemContent';
 
 const useUtilityClasses = (styleProps) => {
   const { classes } = styleProps;
@@ -122,6 +122,9 @@ const TreeItemGroup = styled(Collapse, {
   marginLeft: 17,
 });
 
+/**
+ * @type {import('./TreeItem').default}
+ */
 const TreeItem = React.forwardRef(function TreeItem(inProps, ref) {
   const props = useThemeProps({ props: inProps, name: 'MuiTreeItem' });
   const {
@@ -130,15 +133,17 @@ const TreeItem = React.forwardRef(function TreeItem(inProps, ref) {
     collapseIcon,
     ContentComponent = TreeItemContent,
     ContentProps,
+    disabled: disabledProp,
+    disableMultiSelect,
     endIcon,
     expandIcon,
-    disabled: disabledProp,
     icon,
     id: idProp,
     label,
     nodeId,
     onClick,
     onMouseDown,
+    onNodeSelect,
     TransitionComponent = Collapse,
     TransitionProps,
     ...other
